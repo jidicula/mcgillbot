@@ -2,7 +2,7 @@ import praw
 import time
 
 #Temporary value of xkcd_id
-xkcd_id = 484
+xkcd_id = 1024
 
 def authenticate():
     print("Authenticating...")
