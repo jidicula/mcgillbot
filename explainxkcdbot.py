@@ -15,6 +15,7 @@ def main():
     while True:
         run_explainbot(reddit)
 
+#need to add extraction of url elements 
 def run_explainbot(reddit):
     print("Getting 2500 comments...")
     for comment in reddit.subreddit('test').comments(limit=250):
