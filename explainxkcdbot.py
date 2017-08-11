@@ -1,7 +1,7 @@
 import praw
 import time
+import re
 
-#Temporary value of xkcd_id
 xkcd_id = 1024
 
 def authenticate():
@@ -15,13 +15,15 @@ def main():
     while True:
         run_explainbot(reddit)
 
-#need to add extraction of url elements 
 def run_explainbot(reddit):
     print("Getting 2500 comments...")
+    
     for comment in reddit.subreddit('test').comments(limit=250):
-        if "https://xkcd.com/" in comment.body:
+        matches = re.findall("^https://www.xkcd.com/[0-9]+", comment.body)
+        if matches:
             print("String found in comment " + comment.id)
-            comment.reply("Found...")
+            print(matches)            
+            #comment.reply("Found...")
 
     print("Sleeping for 10 seconds...")
     time.sleep(5)
