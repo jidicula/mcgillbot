@@ -1,6 +1,7 @@
-# A Reddit bot that posts explanation of any xkcd comic posted in comments
-# The explanation is extracted from explainxkcd.com
+# A Reddit bot that posts explanation of xkcd comic strips posted in comments
+# The explanation is extracted from http://explainxkcd.com
 # Created by Ayush Dwivedi (/u/kindw)
+# License: MIT License
 
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
@@ -20,6 +21,7 @@ footer = '\n*---This explanation was extracted from [explainxkcd](http://www.exp
 
 
 def authenticate():
+    
     print('Authenticating...\n')
     reddit = praw.Reddit('explainbot', user_agent = 'web:xkcd-explain-bot:v0.1 (by /u/kindw)')
     print('Authenticated as {}\n'.format(reddit.user.me()))
@@ -44,16 +46,18 @@ def fetchdata(url):
                 tag = tag.nextSibling
         else:
             tag = tag.nextSibling
+    
     return data
 
 
 def run_explainbot(reddit):
+    
     print("Getting 250 comments...\n")
     
     for comment in reddit.subreddit('test').comments(limit = 250):
         match = re.findall("^https://www.xkcd.com/[0-9]+", comment.body)
         if match:
-            print("Link found in comment with id " + comment.id)
+            print("Link found in comment with comment ID: " + comment.id)
             xkcd_url = match[0]
             url_obj = urlparse(xkcd_url)
             xkcd_id = int((url_obj.path.strip("/")))
@@ -62,13 +66,14 @@ def run_explainbot(reddit):
             file_obj_r = open(path,'r')
                         
             try:
-                dataobj = fetchdata(myurl)
+                explanation = fetchdata(myurl)
             except:
                 print('Exception!!! Possibly incorrect xkcd URL...\n')
+                # Typical cause for this will be a URL for an xkcd that does not exist (Example: https://www.xkcd.com/772524318/)
             else:
                 if comment.id not in file_obj_r.read().splitlines():
                     print('Link is unique...posting explanation\n')
-                    comment.reply(header + dataobj + footer)
+                    comment.reply(header + explanation + footer)
                     
                     file_obj_r.close()
 
