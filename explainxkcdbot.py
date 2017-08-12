@@ -50,10 +50,11 @@ def run_explainbot(reddit):
 
             try:
                 dataobj = fetchdata(myurl)
-                print(dataobj)
             except:
                 print("Incorrect XKCD url...")
 
+            else:
+                print(dataobj)
             #comment.reply(dataobj)
             time.sleep(5)
 
