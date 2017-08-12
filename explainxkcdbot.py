@@ -2,13 +2,10 @@ import praw
 import time
 import re
 import requests
-
+import bs4
 
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
-
-
-para_list = []
 
 
 def authenticate():
@@ -18,10 +15,25 @@ def authenticate():
     return reddit
 
 
-def main():
-    reddit = authenticate()
+def fetchdata(url):
+
+    r = requests.get(url)
+    soup = BeautifulSoup(r.content, 'html.parser')
+
+    tag = soup.find('p')
+    data = ''
     while True:
-        run_explainbot(reddit)
+        if isinstance(tag, bs4.element.Tag):
+            if (tag.name == 'h2'):
+                break
+            if (tag.name == 'h3'):
+                tag = tag.nextSibling
+            else:
+                data = data + '\n' + tag.text
+                tag = tag.nextSibling
+        else:
+            tag = tag.nextSibling
+    return data
 
 
 def run_explainbot(reddit):
@@ -34,25 +46,25 @@ def run_explainbot(reddit):
             xkcd_url = match[0]
             url_obj = urlparse(xkcd_url)
             xkcd_id = int((url_obj.path.strip("/")))
-            url = 'http://www.explainxkcd.com/wiki/index.php/' + str(xkcd_id)
+            myurl = 'http://www.explainxkcd.com/wiki/index.php/' + str(xkcd_id)
 
-            r = requests.get(url)
-            soup = BeautifulSoup(r.content, 'html.parser')
-            
-            start = soup.find('table')
+            try:
+                dataobj = fetchdata(myurl)
+                print(dataobj)
+            except:
+                print("Incorrect XKCD url...")
 
-            for i in start.find_next_siblings('p'):
-                para = i.get_text()
-                para_list.append(para)
-                if(i.next_sibling.name != 'p'):
-                    break
-
-            text = "\n".join(para_list)
-            #print(text)
-            comment.reply(text)
+            #comment.reply(dataobj)
+            time.sleep(5)
 
     print("Sleeping for 60 seconds...")
     time.sleep(60)
+
+
+def main():
+    reddit = authenticate()
+    while True:
+        run_explainbot(reddit)
 
 
 if __name__ == '__main__':
