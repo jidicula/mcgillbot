@@ -1,17 +1,24 @@
 import requests
 from bs4 import BeautifulSoup
-from explainxkcdbot import xkcd_id
 
-#xkcd_id is the xkcd comic number
+
+xkcd_id = 1024
 url_string = 'http://www.explainxkcd.com/wiki/index.php/' + str(xkcd_id)
-r = requests.get(url_string)
 
+
+r = requests.get(url_string)
 soup = BeautifulSoup(r.content, 'html.parser')
 
-start = soup.find('table')
-# Since table tag immediately precedes the p tag(s) we need
 
-for a in start.find_next_siblings('p'):
-    print(a.get_text())
-    if(a.next_sibling.name != 'p'):
-        break
+def main():
+    start = soup.find('table')
+    
+    for a in start.find_next_siblings('p'):
+        s = a.get_text()
+        print(s)
+        if(a.next_sibling.name != 'p'):
+            break 
+
+
+if __name__ == '__main__':
+    main()
