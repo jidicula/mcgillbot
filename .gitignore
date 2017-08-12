@@ -1,6 +1,9 @@
 # PRAW config file
 praw.ini
 
+# comment-id data
+commented.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

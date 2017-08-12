@@ -3,7 +3,7 @@ import bs4
 from bs4 import BeautifulSoup
 
 
-xkcd_id = 11960
+xkcd_id = 1024
 url = 'http://www.explainxkcd.com/wiki/index.php/' + str(xkcd_id)
 
 

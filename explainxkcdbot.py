@@ -1,16 +1,16 @@
+from bs4 import BeautifulSoup
+from urllib.parse import urlparse
+
 import praw
 import time
 import re
 import requests
 import bs4
 
-from bs4 import BeautifulSoup
-from urllib.parse import urlparse
-
 
 def authenticate():
     print("Authenticating...")
-    reddit = praw.Reddit('explainbot', user_agent = "xkcd explain bot")
+    reddit = praw.Reddit('explainbot', user_agent = "web:xkcd-explain-bot:v0.1 (by /u/kindw)")
     print("Authenticated as {}".format(reddit.user.me()))
     return reddit
 
@@ -39,7 +39,7 @@ def fetchdata(url):
 def run_explainbot(reddit):
     print("Getting 250 comments...")
     
-    for comment in reddit.subreddit('test').comments(limit=250):
+    for comment in reddit.subreddit('test').comments(limit = 250):
         match = re.findall("^https://www.xkcd.com/[0-9]+", comment.body)
         if match:
             print("String found in comment " + comment.id)
@@ -52,10 +52,10 @@ def run_explainbot(reddit):
                 dataobj = fetchdata(myurl)
             except:
                 print("Incorrect XKCD url...")
-
             else:
                 print(dataobj)
-            #comment.reply(dataobj)
+                comment.reply(dataobj)
+            
             time.sleep(5)
 
     print("Sleeping for 60 seconds...")
