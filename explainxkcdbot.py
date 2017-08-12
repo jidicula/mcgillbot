@@ -8,6 +8,10 @@ import requests
 import bs4
 
 
+path = '/home/ayush/Projects/explainxkcdbot/commented.txt'
+header = '**Explanation of this xkcd:**\n'
+footer = '\n**This explanation was extracted from [explainxkcd](http://www.explainxkcd.com) | Created by u/kindw**'
+
 def authenticate():
     print("Authenticating...")
     reddit = praw.Reddit('explainbot', user_agent = "web:xkcd-explain-bot:v0.1 (by /u/kindw)")
@@ -47,14 +51,26 @@ def run_explainbot(reddit):
             url_obj = urlparse(xkcd_url)
             xkcd_id = int((url_obj.path.strip("/")))
             myurl = 'http://www.explainxkcd.com/wiki/index.php/' + str(xkcd_id)
-
+            
+            file_obj_r = open(path,'r')
+                        
             try:
                 dataobj = fetchdata(myurl)
             except:
                 print("Incorrect XKCD url...")
             else:
-                print(dataobj)
-                comment.reply(dataobj)
+                if comment.id not in file_obj_r.read().splitlines():
+                    print('found unique')
+                    print(dataobj)
+                    comment.reply(header + dataobj + footer)
+                    
+                    file_obj_r.close()
+
+                    file_obj_w = open(path,'a+')
+                    file_obj_w.write(comment.id + '\n')
+                    file_obj_w.close()
+                else:
+                    print('duplicate')
             
             time.sleep(5)
 
