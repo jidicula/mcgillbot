@@ -1,3 +1,7 @@
+# A Reddit bot that posts explanation of any xkcd comic posted in comments
+# The explanation is extracted from explainxkcd.com
+# Created by Ayush Dwivedi (/u/kindw)
+
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 
@@ -7,15 +11,18 @@ import re
 import requests
 import bs4
 
-
 path = '/home/ayush/Projects/explainxkcdbot/commented.txt'
+# Location of file where id's of already visited comments are maintained
+
 header = '**Explanation of this xkcd:**\n'
-footer = '\n**This explanation was extracted from [explainxkcd](http://www.explainxkcd.com) | Created by u/kindw**'
+footer = '\n*---This explanation was extracted from [explainxkcd](http://www.explainxkcd.com) | Bot created by u/kindw | [Source code](https://github.com/aydwi/explainxkcdbot)*'
+# Text to be posted along with comic description
+
 
 def authenticate():
-    print("Authenticating...")
-    reddit = praw.Reddit('explainbot', user_agent = "web:xkcd-explain-bot:v0.1 (by /u/kindw)")
-    print("Authenticated as {}".format(reddit.user.me()))
+    print('Authenticating...\n')
+    reddit = praw.Reddit('explainbot', user_agent = 'web:xkcd-explain-bot:v0.1 (by /u/kindw)')
+    print('Authenticated as {}\n'.format(reddit.user.me()))
     return reddit
 
 
@@ -41,12 +48,12 @@ def fetchdata(url):
 
 
 def run_explainbot(reddit):
-    print("Getting 250 comments...")
+    print("Getting 250 comments...\n")
     
     for comment in reddit.subreddit('test').comments(limit = 250):
         match = re.findall("^https://www.xkcd.com/[0-9]+", comment.body)
         if match:
-            print("String found in comment " + comment.id)
+            print("Link found in comment with id " + comment.id)
             xkcd_url = match[0]
             url_obj = urlparse(xkcd_url)
             xkcd_id = int((url_obj.path.strip("/")))
@@ -57,11 +64,10 @@ def run_explainbot(reddit):
             try:
                 dataobj = fetchdata(myurl)
             except:
-                print("Incorrect XKCD url...")
+                print('Exception!!! Possibly incorrect xkcd URL...\n')
             else:
                 if comment.id not in file_obj_r.read().splitlines():
-                    print('found unique')
-                    print(dataobj)
+                    print('Link is unique...posting explanation\n')
                     comment.reply(header + dataobj + footer)
                     
                     file_obj_r.close()
@@ -70,11 +76,11 @@ def run_explainbot(reddit):
                     file_obj_w.write(comment.id + '\n')
                     file_obj_w.close()
                 else:
-                    print('duplicate')
+                    print('Already visited link...No reply needed\n')
             
             time.sleep(5)
 
-    print("Sleeping for 60 seconds...")
+    print('Waiting 60 seconds...\n')
     time.sleep(60)
 
 
