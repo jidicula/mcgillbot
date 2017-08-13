@@ -37,4 +37,4 @@ A Reddit bot that posts explanation of the xkcd links posted in the comments. Th
 3. Create a blank text file named *comments.txt* inside the project directory
 4. In the file *explainxkcdbot.py*, replace the value of `path` with the location of *comments.txt*.
 5. Type `python3 explainxkcdbot.py` in your Terminal to run the bot.
-6. If the Reddit API returns an error due to too many requests, adjust the instances of `time.sleep(value)` in *explainxkcdbot.py*
+6. If the Reddit API returns an error due to too many requests, adjust `val` in the instances of `time.sleep(val)` in *explainxkcdbot.py*
