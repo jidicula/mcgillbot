@@ -57,20 +57,22 @@ def run_explainbot(reddit):
     for comment in reddit.subreddit('test').comments(limit = 250):
         match = re.findall("[a-z]*[A-Z]*[0-9]*https://www.xkcd.com/[0-9]+", comment.body)
         if match:
+            print(match)
             print("Link found in comment with comment ID: " + comment.id)
             xkcd_url = match[0]
+            print(xkcd_url)
             url_obj = urlparse(xkcd_url)
             xkcd_id = int((url_obj.path.strip("/")))
             myurl = 'http://www.explainxkcd.com/wiki/index.php/' + str(xkcd_id)
             
-            file_obj_r = open(path,'r')
+            #file_obj_r = open(path,'r')
                         
             try:
-                explanation = fetchdata(myurl)
+                explanation = fetchdata('https://www.xkcd.com/447')
             except:
                 print('Exception!!! Possibly incorrect xkcd URL...\n')
                 # Typical cause for this will be a URL for an xkcd that does not exist (Example: https://www.xkcd.com/772524318/)
-            else:
+            '''else:
                 if comment.id not in file_obj_r.read().splitlines():
                     print('Link is unique...posting explanation\n')
                     comment.reply(header + explanation + footer)
@@ -82,7 +84,7 @@ def run_explainbot(reddit):
                     file_obj_w.close()
                 else:
                     print('Already visited link...no reply needed\n')
-            
+            '''
             time.sleep(10)
 
     print('Waiting 60 seconds...\n')
