@@ -57,8 +57,10 @@ def run_explainbot(reddit):
     for comment in reddit.subreddit('test').comments(limit = 250):
         match = re.findall("[a-z]*[A-Z]*[0-9]*https://www.xkcd.com/[0-9]+", comment.body)
         if match:
-            print("Link found in comment with comment ID: " + comment.id)
+            print('Link found in comment with comment ID: ' + comment.id)
             xkcd_url = match[0]
+            print('Link: ' + xkcd_url)
+
             url_obj = urlparse(xkcd_url)
             xkcd_id = int((url_obj.path.strip("/")))
             myurl = 'http://www.explainxkcd.com/wiki/index.php/' + str(xkcd_id)
