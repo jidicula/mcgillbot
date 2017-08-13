@@ -26,7 +26,7 @@ A Reddit bot that posts explanation of the xkcd links posted in the comments. Th
 
 ### How to run it
 1. Clone or download (and extract) this repository and navigate to it's directory
-2. Create a file named 'praw.ini' with it's contents as:
+2. Create a file named *praw.ini* with it's contents as:
     ```
     [explainbot]
     username: reddit username
