@@ -22,11 +22,11 @@ A Reddit bot that posts explanation of the xkcd links posted in the comments. Th
     * decription: Put in a description of your bot/script
     * redirect uri: `http://localhost:8080`
 4. Click **create app**
-5. You will be provided a `client_id` and `client_secret`
+5. You will be given a `client_id` and a `client_secret`. Keep them confidential.
 
 ### How to run it
-1. Clone or download this repo and navigate to the directory
-2. Create a file named 'praw.ini' with contents as:
+1. Clone or download (and extract) this repository and navigate to it's directory
+2. Create a file named 'praw.ini' with it's contents as:
     ```
     [explainbot]
     username: reddit username
@@ -34,7 +34,8 @@ A Reddit bot that posts explanation of the xkcd links posted in the comments. Th
     client_id: client_id that you got
     client_secret: client_secret that you got
     ```
-3. Create a blank text file named *comments.txt* inside the project directory
-4. In the file *explainxkcdbot.py*, replace the value of `path` with the location of *comments.txt*.
-5. Type `python3 explainxkcdbot.py` in your Terminal to run the bot.
+3. Create a blank text file named *commented.txt* inside the project directory
+4. In *explainxkcdbot.py*, replace the value of `path` with the location of your *commented.txt*.
+5. At a minimum, three files, namely *explainxkcdbot.py*, *praw.ini* and *commented.txt* are required for the bot to run. 
+5. Type `python3 explainxkcdbot.py` in the Terminal to run the bot.
 6. If the Reddit API returns an error due to too many requests, adjust `val` in the instances of `time.sleep(val)` in *explainxkcdbot.py*
