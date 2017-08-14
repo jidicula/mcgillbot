@@ -1,4 +1,4 @@
-# Forked from explainxkcdbot
+# McGillBot, Forked from explainxkcdbot
 A Reddit bot that posts explanation of the xkcd links posted in the comments. The explanation is extracted from the explain xkcd wiki (http://explainxkcd.com)
 
 ### Requirements
